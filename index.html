@@ -446,6 +446,169 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Pomodoro */
+        .pomo-timer {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .pomo-display {
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 4px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .pomo-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        .pomo-ring {
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 24px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pomo-ring svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+        }
+        .pomo-ring-bg {
+            fill: none;
+            stroke: rgba(74, 120, 90, 0.1);
+            stroke-width: 4;
+        }
+        .pomo-ring-progress {
+            fill: none;
+            stroke: var(--accent-green);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+        .pomo-ring-progress.break-mode {
+            stroke: var(--accent-earth);
+        }
+
+        .pomo-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 28px;
+        }
+        .pomo-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 12px 28px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .pomo-btn:hover {
+            border-color: var(--glass-border-hover);
+            color: var(--text-primary);
+        }
+        .pomo-btn.primary {
+            background: linear-gradient(135deg, rgba(74, 158, 107, 0.2), rgba(61, 122, 84, 0.15));
+            border-color: var(--accent-moss);
+            color: var(--accent-green-light);
+        }
+        .pomo-btn.primary:hover {
+            box-shadow: 0 0 20px rgba(74, 158, 107, 0.15);
+        }
+
+        .pomo-config {
+            margin-bottom: 24px;
+        }
+        .pomo-bucket-select {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .pomo-bucket-btn {
+            background: rgba(11, 18, 16, 0.6);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+        .pomo-bucket-btn:hover { border-color: var(--glass-border-hover); color: var(--text-secondary); }
+        .pomo-bucket-btn.selected-promoting {
+            background: linear-gradient(135deg, rgba(139, 115, 85, 0.2), rgba(139, 115, 85, 0.1));
+            border-color: rgba(139, 115, 85, 0.5);
+            color: var(--accent-sand);
+        }
+        .pomo-bucket-btn.selected-delivering {
+            background: linear-gradient(135deg, rgba(74, 120, 140, 0.2), rgba(74, 120, 140, 0.1));
+            border-color: rgba(74, 120, 140, 0.5);
+            color: #7ab8d4;
+        }
+        .pomo-bucket-btn.selected-producing {
+            background: linear-gradient(135deg, rgba(74, 158, 107, 0.2), rgba(74, 158, 107, 0.1));
+            border-color: rgba(74, 158, 107, 0.5);
+            color: var(--accent-green-light);
+        }
+
+        .pomo-desc {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .pomo-sessions {
+            margin-top: 28px;
+        }
+        .pomo-session-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(11, 18, 16, 0.4);
+            border: 1px solid rgba(74, 120, 90, 0.08);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+        .pomo-session-bucket {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+        .pomo-session-bucket.promoting { color: var(--accent-sand); }
+        .pomo-session-bucket.delivering { color: #7ab8d4; }
+        .pomo-session-bucket.producing { color: var(--accent-green-light); }
+        .pomo-session-desc { color: var(--text-secondary); flex: 1; margin: 0 16px; }
+        .pomo-session-time { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+        .pomo-total {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .pomo-total strong { color: var(--text-primary); font-size: 16px; }
     </style>
 </head>
 <body>
@@ -457,6 +620,7 @@
 
         <nav>
             <button class="active" onclick="switchView('entry')">Log Entry</button>
+            <button onclick="switchView('timer')">Timer</button>
             <button onclick="switchView('dashboard')">Dashboard</button>
         </nav>
 
@@ -528,6 +692,47 @@
             </div>
 
             <button class="btn-save" onclick="saveEntry()">Save Entry</button>
+        </div>
+
+        <!-- TIMER VIEW -->
+        <div class="view" id="view-timer">
+            <div class="section pomo-config">
+                <div class="section-title">Bucket</div>
+                <div class="pomo-bucket-select">
+                    <button class="pomo-bucket-btn" data-bucket="promoting" onclick="selectBucket(this)">Promoting</button>
+                    <button class="pomo-bucket-btn" data-bucket="delivering" onclick="selectBucket(this)">Delivering</button>
+                    <button class="pomo-bucket-btn" data-bucket="producing" onclick="selectBucket(this)">Producing</button>
+                </div>
+                <div class="pomo-desc">
+                    <input type="text" id="pomo-desc" placeholder="What are you working on?">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="pomo-timer">
+                    <div class="pomo-ring">
+                        <svg width="240" height="240" viewBox="0 0 240 240">
+                            <circle class="pomo-ring-bg" cx="120" cy="120" r="112"/>
+                            <circle class="pomo-ring-progress" id="pomoRing" cx="120" cy="120" r="112"
+                                stroke-dasharray="703.72" stroke-dashoffset="0"/>
+                        </svg>
+                        <div>
+                            <div class="pomo-display" id="pomoDisplay">25:00</div>
+                            <div class="pomo-label" id="pomoLabel">Focus</div>
+                        </div>
+                    </div>
+                    <div class="pomo-controls">
+                        <button class="pomo-btn primary" id="pomoStartBtn" onclick="pomoToggle()">Start</button>
+                        <button class="pomo-btn" onclick="pomoReset()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section pomo-sessions">
+                <div class="section-title">Today's Sessions</div>
+                <div id="pomoSessionsList"></div>
+                <div class="pomo-total" id="pomoTotal"></div>
+            </div>
         </div>
 
         <!-- DASHBOARD VIEW -->
@@ -677,6 +882,159 @@
             setEntries(entries);
             renderDashboard();
         }
+
+        // Pomodoro Timer
+        const FOCUS_MINS = 25;
+        const BREAK_MINS = 5;
+        const CIRCUMFERENCE = 2 * Math.PI * 112;
+
+        let pomoState = 'idle'; // idle, running, paused, break
+        let pomoInterval = null;
+        let pomoSecondsLeft = FOCUS_MINS * 60;
+        let pomoTotalSeconds = FOCUS_MINS * 60;
+        let pomoBucket = null;
+        let pomoIsBreak = false;
+
+        function selectBucket(btn) {
+            document.querySelectorAll('.pomo-bucket-btn').forEach(b => {
+                b.className = 'pomo-bucket-btn';
+            });
+            const bucket = btn.dataset.bucket;
+            btn.classList.add('selected-' + bucket);
+            pomoBucket = bucket;
+        }
+
+        function updatePomoDisplay() {
+            const mins = Math.floor(pomoSecondsLeft / 60);
+            const secs = pomoSecondsLeft % 60;
+            document.getElementById('pomoDisplay').textContent =
+                String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+            const progress = 1 - (pomoSecondsLeft / pomoTotalSeconds);
+            const offset = CIRCUMFERENCE * (1 - progress);
+            const ring = document.getElementById('pomoRing');
+            ring.style.strokeDasharray = CIRCUMFERENCE;
+            ring.style.strokeDashoffset = offset;
+
+            if (pomoIsBreak) {
+                ring.classList.add('break-mode');
+            } else {
+                ring.classList.remove('break-mode');
+            }
+        }
+
+        function pomoToggle() {
+            const btn = document.getElementById('pomoStartBtn');
+
+            if (pomoState === 'idle' || pomoState === 'paused') {
+                if (!pomoIsBreak && !pomoBucket) {
+                    showToast('Select a bucket first');
+                    return;
+                }
+                pomoState = 'running';
+                btn.textContent = 'Pause';
+                pomoInterval = setInterval(() => {
+                    pomoSecondsLeft--;
+                    updatePomoDisplay();
+                    if (pomoSecondsLeft <= 0) {
+                        clearInterval(pomoInterval);
+                        pomoInterval = null;
+                        if (!pomoIsBreak) {
+                            savePomoSession();
+                            startBreak();
+                        } else {
+                            endBreak();
+                        }
+                    }
+                }, 1000);
+            } else if (pomoState === 'running') {
+                pomoState = 'paused';
+                btn.textContent = 'Resume';
+                clearInterval(pomoInterval);
+                pomoInterval = null;
+            }
+        }
+
+        function startBreak() {
+            pomoIsBreak = true;
+            pomoSecondsLeft = BREAK_MINS * 60;
+            pomoTotalSeconds = BREAK_MINS * 60;
+            pomoState = 'idle';
+            document.getElementById('pomoLabel').textContent = 'Break';
+            document.getElementById('pomoStartBtn').textContent = 'Start Break';
+            updatePomoDisplay();
+            showToast('Session complete — take a break');
+        }
+
+        function endBreak() {
+            pomoIsBreak = false;
+            pomoSecondsLeft = FOCUS_MINS * 60;
+            pomoTotalSeconds = FOCUS_MINS * 60;
+            pomoState = 'idle';
+            document.getElementById('pomoLabel').textContent = 'Focus';
+            document.getElementById('pomoStartBtn').textContent = 'Start';
+            updatePomoDisplay();
+            showToast('Break over — go again');
+        }
+
+        function pomoReset() {
+            clearInterval(pomoInterval);
+            pomoInterval = null;
+            pomoIsBreak = false;
+            pomoSecondsLeft = FOCUS_MINS * 60;
+            pomoTotalSeconds = FOCUS_MINS * 60;
+            pomoState = 'idle';
+            document.getElementById('pomoLabel').textContent = 'Focus';
+            document.getElementById('pomoStartBtn').textContent = 'Start';
+            updatePomoDisplay();
+        }
+
+        function getPomoSessions() {
+            return JSON.parse(localStorage.getItem('logg-pomo-sessions') || '[]');
+        }
+
+        function savePomoSession() {
+            const sessions = getPomoSessions();
+            sessions.push({
+                date: today.toISOString().split('T')[0],
+                bucket: pomoBucket,
+                description: document.getElementById('pomo-desc').value || '',
+                minutes: FOCUS_MINS,
+                timestamp: Date.now()
+            });
+            localStorage.setItem('logg-pomo-sessions', JSON.stringify(sessions));
+            renderPomoSessions();
+        }
+
+        function renderPomoSessions() {
+            const todayStr = today.toISOString().split('T')[0];
+            const sessions = getPomoSessions().filter(s => s.date === todayStr);
+            const list = document.getElementById('pomoSessionsList');
+            const total = document.getElementById('pomoTotal');
+
+            if (sessions.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>No sessions today yet.</p></div>';
+                total.innerHTML = '';
+                return;
+            }
+
+            list.innerHTML = sessions.map(s => `
+                <div class="pomo-session-card">
+                    <span class="pomo-session-bucket ${s.bucket}">${s.bucket}</span>
+                    <span class="pomo-session-desc">${s.description || '—'}</span>
+                    <span class="pomo-session-time">${s.minutes}m</span>
+                </div>
+            `).join('');
+
+            const totalMins = sessions.reduce((sum, s) => sum + s.minutes, 0);
+            const hrs = Math.floor(totalMins / 60);
+            const mins = totalMins % 60;
+            total.innerHTML = `<strong>${hrs}h ${mins}m</strong> focused today`;
+        }
+
+        // Init timer display
+        updatePomoDisplay();
+        renderPomoSessions();
     </script>
 </body>
 </html>
